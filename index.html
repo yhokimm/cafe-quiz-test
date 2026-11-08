@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#315548">
+<title>시니어용 카페 영어 퀴즈</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f3eb;color:#292e27;font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;line-height:1.6}main{max-width:760px;margin:auto;padding:36px 20px 48px}.label{color:#315548;font-size:20px;font-weight:750;letter-spacing:.04em}.cup{font-size:42px;display:block;margin-bottom:10px}h1{font-size:clamp(28px,5vw,38px);line-height:1.4;margin:10px 0 26px;letter-spacing:-.04em}.question{background:#fffdf8;border:1px solid #dfd9ca;border-radius:22px;padding:26px;margin-bottom:22px}.step{font-size:18px;font-weight:700;color:#596457}h2{font-size:clamp(26px,4.6vw,32px);line-height:1.5;margin:12px 0}.hint{font-size:20px;margin:0;color:#525b50}.choices{display:grid;gap:14px}.choice{display:flex;align-items:center;gap:16px;width:100%;padding:21px 20px;background:white;border:2px solid #c8cec2;border-radius:16px;text-align:left;color:inherit;font:inherit;cursor:pointer;min-height:112px;touch-action:manipulation}.number{flex-shrink:0;display:grid;place-items:center;border-radius:50%;width:38px;height:38px;background:#eef1e9;color:#315548;font-size:21px;font-weight:750}.words{min-width:0}.en{display:block;font-size:clamp(23px,4.8vw,28px);font-weight:700;line-height:1.4;overflow-wrap:anywhere}.ko{display:block;font-size:21px;color:#555e52;margin-top:5px}.choice:hover{border-color:#315548;background:#f4f7f1}.choice:focus-visible,.reset:focus-visible{outline:4px solid #ad650b;outline-offset:4px}.choice.correct{border-color:#286443;background:#eaf5ed}.choice.wrong{border-color:#aa5428;background:#fff3e9}.feedback{margin-top:22px;padding:18px;border-radius:14px;background:#eaece3;font-size:24px;font-weight:750;text-align:center;min-height:76px}.feedback.success{background:#dcefe1;color:#205333}.feedback.retry{background:#ffebdb;color:#85401f}.reset{display:block;margin:20px auto 0;border:2px solid #52654f;background:transparent;border-radius:12px;padding:12px 24px;color:#31482e;font:inherit;font-size:20px;cursor:pointer}footer{text-align:center;font-size:18px;color:#61685e;margin-top:26px}@media(max-width:420px){main{padding:24px 16px 36px}.question{padding:22px 18px}.choice{gap:12px;padding:19px 14px}.number{width:32px;height:32px}.ko{font-size:20px}}
+</style>
+</head>
+<body>
+<main>
+<header><span class="cup" aria-hidden="true">☕</span><div class="label">하루 한 문장 · 카페 영어</div><h1>시니어용 카페 영어 퀴즈</h1></header>
+<section aria-labelledby="question">
+<div class="question"><div class="step">문제 1 / 1</div><h2 id="question">카페에서 커피 한 잔을 주문하려면?</h2><p class="hint">알맞은 영어 문장을 눌러 보세요.</p></div>
+<div class="choices">
+<button class="choice" type="button" data-correct="true" aria-pressed="false"><span class="number" aria-hidden="true">1</span><span class="words"><span class="en" lang="en">I'd like a coffee, please.</span><span class="ko">커피 한 잔 주세요.</span></span></button>
+<button class="choice" type="button" data-correct="false" aria-pressed="false"><span class="number" aria-hidden="true">2</span><span class="words"><span class="en" lang="en">Where is the restroom?</span><span class="ko">화장실은 어디에 있나요?</span></span></button>
+<button class="choice" type="button" data-correct="false" aria-pressed="false"><span class="number" aria-hidden="true">3</span><span class="words"><span class="en" lang="en">Yes, please.</span><span class="ko">네, 부탁합니다.</span></span></button>
+<button class="choice" type="button" data-correct="false" aria-pressed="false"><span class="number" aria-hidden="true">4</span><span class="words"><span class="en" lang="en">How can I help you?</span><span class="ko">무엇을 도와드릴까요?</span></span></button>
+</div>
+<div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true">천천히 골라 보세요.</div>
+<button class="reset" type="button">처음부터 다시 풀기</button>
+</section>
+<footer>틀려도 괜찮아요. 편안하게 연습해 보세요.</footer>
+</main>
+<script>
+const choices = document.querySelectorAll('.choice');
+const feedback = document.getElementById('feedback');
+function clearSelection(){choices.forEach(button=>{button.classList.remove('correct','wrong');button.setAttribute('aria-pressed','false');});}
+choices.forEach(button=>button.addEventListener('click',()=>{
+clearSelection();
+const correct=button.dataset.correct==='true';
+button.classList.add(correct?'correct':'wrong');
+button.setAttribute('aria-pressed','true');
+feedback.className='feedback '+(correct?'success':'retry');
+feedback.textContent=correct?'정답입니다':'오답입니다';
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.cancel();
+  const speech = new SpeechSynthesisUtterance(correct ? '정답입니다' : '오답입니다');
+  speech.lang = 'ko-KR';
+  speech.rate = 0.85;
+  window.speechSynthesis.speak(speech);
+}
+}));
+document.querySelector('.reset').addEventListener('click',()=>{clearSelection();feedback.className='feedback';feedback.textContent='천천히 골라 보세요.';choices[0].focus();});
+</script>
+</body>
+</html>
